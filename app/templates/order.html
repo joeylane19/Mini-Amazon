@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<br><br>
+
+<!--Title-->
+<h2>Your Order:</h2>
+
+<!--Table for order history data-->
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Product ID</th>
+      <th scope="col">Product Name</th>
+      <th scope="col">Price</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Fullfilled</th>
+      <th scope="col">Date</th>
+      <th scope="col">Rate Product</th>
+      <th scope="col">Seller Review</th>
+
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for product in order_items%}
+    <tr>
+      <th scope="row">{{product[0].product_id}}</th>
+      <!--Link to Product Purchased-->
+      <td><a href="{{ url_for('index.product', id = product[0].product_id)}}"> {{product[0].name}}</a></td>
+      <td>{{product[0].price}}</td>
+      <td>{{product[0].quantity}}</td>
+      <td>{{product[0].fullfilled}}</td>
+      <td>{{product[0].date}}</td>
+      <!--Link to Product Page of product purchased-->
+      <td>
+        <a href="{{ url_for('index.product', id = product[0].product_id) }}"> Review Product</a>
+      </td>
+      <!--Link to Seller Page for that product-->
+      <td>
+        <a href="{{ url_for('public.view', id = product[0].seller_id) }}"> Rate Seller</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<!--Display Total Price of Order-->
+<h4>Total Price: </h4>
+<p>{{total_price}}</p>
+
+
+<br><br>
+
+
+
+
+{% endblock %}

@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!--Account Information Currently-->
+<h1>Your Account:</h1>
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col"> First Name: {{current_user.firstname}}</th>
+      <th scope="col">Last Name: {{current_user.lastname}}</th>
+      <th scope="col">Email: {{current_user.email}}</th>
+      <th scope="col">Address: {{current_user.addr}}</th>
+      <th scope="col"> Balance: {{current_user.balance}}</th>
+    </tr>
+  </thead>
+</table>
+
+<!--Updating Account Information -->
+  <form action="" method="post" novalidate>
+    <p>
+      {{ fname_Form.hidden_tag() }}
+        <input type="hidden" name="fname" value= {{current_user.firstname}}>
+        {{ fname_Form.firstname.label }}<br />
+        {{ fname_Form.firstname(size=32) }}<br />
+        {{ fname_Form.submit(class_="btn btn-black") }}
+    </p>
+  </form>
+
+  <form action="" method="post" novalidate>
+    <p>
+      {{ ln_Form.hidden_tag() }}
+        <input type="hidden" name="lname" value= {{current_user.lastname}}>
+        {{ ln_Form.lastname.label }}<br />
+        {{ ln_Form.lastname(size=32) }}<br />    
+        {{ ln_Form.submit(class_="btn btn-black") }}
+    </p>
+  </form>
+  <form action="" method="post" novalidate>
+    <p>
+      {{ email_Form.hidden_tag() }}
+        <input type="hidden" name="email_1" value= {{current_user.email}}>
+        {{ email_Form.email.label }}<br />
+        {{ email_Form.email(size=32) }}<br />
+        {% for error in email_Form.email.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+        {{ email_Form.submit(class_="btn btn-black") }}
+    </p>
+  </form>
+  <form action="" method="post" novalidate>
+    <p>
+      {{ addr_Form.hidden_tag() }}
+        <input type="hidden" name="addr_1" value= {{current_user.addr}}>
+        {{ addr_Form.addr.label }}<br />
+        {{ addr_Form.addr(size=32) }}<br />
+        {{ addr_Form.submit(class_="btn btn-black") }}
+    </p>
+  </form>
+  <form action="" method="post" novalidate>
+    <p>
+      {{ pwd_Form.hidden_tag() }}
+      <input type="hidden" name="password_1" value= {{current_user.password}}>
+      {{ pwd_Form.password.label }}<br />
+      {{ pwd_Form.password(size=32) }}<br />
+      {% for error in pwd_Form.password.errors %}
+      <span style="color: red;">[{{ error }}]</span>
+      {% endfor %}
+    </p>
+    <p>
+      {{ pwd_Form.password2.label }}<br />
+      {{ pwd_Form.password2(size=32) }}<br />
+      {% for error in pwd_Form.password2.errors %}
+      <span style="color: red;">[{{ error }}]</span>
+      {% endfor %}
+      {{ pwd_Form.submit(class_="btn btn-black") }}
+    </p>
+  </form>
+  <form action="" method="post" novalidate>
+    <p>
+      {{ addBalance.hidden_tag() }}
+        <input type="hidden" name="balance_1" value= {{current_user.balance}}>
+        {{ addBalance.balance.label }}<br />
+        {{ addBalance.balance(size=32) }}<br />
+        {% for error in addBalance.balance.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+        {{ addBalance.submit(class_="btn btn-black") }}
+    
+    </p>
+    <p>
+        <br>
+      {{ lowerBalance.hidden_tag() }}
+      <input type="hidden" name="balance_2" value= {{current_user.balance}}>
+      {{ lowerBalance.negbalance.label }}<br />
+      {{ lowerBalance.negbalance(size=32) }}<br />
+      {% for error in lowerBalance.negbalance.errors %}
+      <span style="color: red;">[{{ error }}]</span>
+      {% endfor %}
+      {{ lowerBalance.submit(class_="btn btn-black") }}
+         
+    </p>
+  </form>
+
+
+  <!--Reviews that user has left on other products-->
+  <p>Product Reviews:</p>
+  <table class='table table-hover table-bordered container'>
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Product ID</th>
+        <th scope="col">Rating</th>
+        <th scope="col">Date</th>
+        <th scope="col">Update Review</th>
+  
+      </tr>
+    </thead>
+    <tbody>
+      {% for review in prod %}
+        <tr>
+          <th scope="row">{{review.product_id}}</th>
+          <td>{{review.rating}}</td>
+          <td>{{review.date.strftime("%Y-%m-%d %H:%M:%S")}}</td>
+          <td>
+            <a href="{{ url_for('index.product', id = review.product_id) }}"> See Review</a>
+            </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <!--Reviews that user has left on other sellers-->
+  <p>Seller Reviews:</p>
+  <table class='table table-hover table-bordered container'>
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Seller ID</th>
+        <th scope="col">Rating</th>
+        <th scope="col">Date</th>
+        <th scope="col">Go to Review</th>
+  
+      </tr>
+    </thead>
+    <tbody>
+      {% for review in sell %}
+        <tr>
+          <th scope="row">{{review.seller_id}}</th>
+          <td>{{review.rating}}</td>
+          <td>{{review.date_and_time.strftime("%Y-%m-%d %H:%M:%S")}}</td>
+          <td>
+            <a href="{{ url_for('public.view', id = review.seller_id) }}"> See Seller</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+
+
+
+  {% endblock %}

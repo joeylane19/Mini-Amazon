@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!--Content that shows for every user-->
+<h2 style="text-align: center;"> {{user.firstname}} {{user.lastname}} </h2>
+<p style="text-align: center;"> User ID: {{user.id}} </p>
+
+<!--Content that shows for only sellers-->
+{% if seller %}
+<p style="text-align: center;"><i class="fa fa-fw fa-envelope"></i> {{user.email}} </p>
+<p style="text-align: center;"><i class="fa fa-fw fa-map-marker"></i> {{user.addr}} </p>
+
+{% endif %}
+
+<!--Seller Review Start-->
+
+<!--If haven't reviewed-->
+{%if canReview %}
+{% if notReviewed %}
+
+<form style="text-align: center;" action="" method="post" novalidate>
+  <input type="hidden" name="rated">
+  <input type="hidden" name="review">
+  {{ form.hidden_tag() }}
+
+  <div class="rate">
+    <input type="radio" id="star5" name="rate" value="5" />
+    <label for="star5" title="text">{{form.rating}}</label>
+    <input type="radio" id="star4" name="rate" value="4" />
+    <label for="star4" title="text">{{form.rating}}</label>
+    <input type="radio" id="star3" name="rate" value="3" />
+    <label for="star3" title="text">{{form.rating}}</label>
+    <input type="radio" id="star2" name="rate" value="2" />
+    <label for="star2" title="text">{{form.rating}}</label>
+    <input type="radio" id="star1" name="rate" value="1" />
+    <label for="star1" title="text">{{form.rating}}</label>
+  </div>
+
+  <button class="button button1" onclick=form.sumbit()>Submit Review</button>
+
+
+</form>
+
+
+<!--If seller has been reviewed by this user-->
+{% else %}
+
+<form style="text-align: center;" action="" method="post" novalidate>
+  <input type="hidden" name="rated">
+  <input type="hidden" name="review">
+  {{ form.hidden_tag() }}
+
+  <div class="rate">
+    <input type="radio" id="star5" name="rate" value="5" />
+    <label for="star5" title="text">{{form.rating}}</label>
+    <input type="radio" id="star4" name="rate" value="4" />
+    <label for="star4" title="text">{{form.rating}}</label>
+    <input type="radio" id="star3" name="rate" value="3" />
+    <label for="star3" title="text">{{form.rating}}</label>
+    <input type="radio" id="star2" name="rate" value="2" />
+    <label for="star2" title="text">{{form.rating}}</label>
+    <input type="radio" id="star1" name="rate" value="1" />
+    <label for="star1" title="text">{{form.rating}}</label>
+  </div>
+
+  <button class="button button1" onclick=form.sumbit()>Edit Review</button>
+
+  <input type="hidden" name="delete">
+  {{ form2.hidden_tag() }}
+  <button class="button button1" onclick=form2.sumbit()>Delete</button>
+
+</form>
+
+{% endif %}
+{% endif %}
+
+<!--Review End-->
+
+<h2>Seller Reviews:</h2>
+<b>Number of Reviews: </b>
+<td>{{num}}</td>
+<b>Average Rating: </b>
+<td>{{rating}}</td>
+
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Author ID</th>
+      <th scope="col">Rating</th>
+      <th scope="col">Date</th>
+
+    </tr>
+  </thead>
+  <tbody>
+    {% for review in reviews%}
+    <tr>
+      <th scope="row">{{review.author_id}}</th>
+      <td>{{review.rating}}</td>
+      <td>{{review.date_and_time.strftime("%Y-%m-%d %H:%M:%S")}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+
+
+{% endblock %}

@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<br><br>
+
+<h2>My Products:</h2>
+
+<!--Products Being Sold by User Table-->
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Remove</th>
+      <th scope="col">Product ID</th>
+      <th scope="col">Product Name</th>
+      <th scope="col">Price</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Change Quantity</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for product in avail_products%}
+    <tr>
+      <td>
+
+        <!--Remove Product Button-->
+        <form action="" method="post" novalidate>
+          {{ form.hidden_tag() }}
+          <input type="hidden" name="remove_id" value={{product.id}}>
+          <button onclick=form.submit()> Remove</button>
+        </form>
+      </td>
+
+      <!--Fil in Product Information-->
+      <th scope="row">{{product.id}}</th>
+      <td>{{product.name}}</td>
+      <td>{{product.price}}</td>
+      <td>{{product.quantity}}</td>
+
+      <!--Change Item Quantity Button-->
+      <td>
+        <form action="" method="post" novalidate>
+          {{ form2.hidden_tag() }}
+          <input type="hidden" name="product_id" value={{product.id}}>
+          <p>{{ form2.quantity(size = 3)}}</p>
+          <button onclick=form.submit()> Change Quantity</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+
+    <!--Add New Product Button-->
+    <tr>
+      <a href="{{ url_for('users.addproduct') }}" type="button" class="btn btn-light">+ ADD NEW PRODUCT</a>
+    </tr>
+
+    <!--Add Existing Product Button-->
+    <tr>
+      <a href="{{ url_for('inventory.existingproduct') }}" type="button" class="btn btn-light">+ ADD EXISTING
+        PRODUCT</a>
+    </tr>
+  </tbody>
+</table>
+<p>
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <ul>
+    {% for message in messages %}
+    <span style="color: red;">{{ message }}</span>
+    {% endfor %}
+  </ul>
+  {% endif %}
+  {% endwith %}
+</p>
+
+<br><br>
+
+{% endblock %}

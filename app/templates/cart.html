@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<br><br>
+
+<h2>Your Cart:</h2>
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+
+    <!--Column Names-->
+    <tr>
+      <th scope="col">Product ID</th>
+      <th scope="col">Seller ID</th>
+      <th scope="col">Product Name</th>
+      <th scope="col">Price</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Change Quantity</th>
+      <th scope="col">Remove Item</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for product in cart_items%}
+    
+    <!--Cart Specifics Fill Ins-->
+    <tr>
+      <th scope="row">{{product.product_id}}</th>
+      <td>{{product.seller_id}}</td>
+      <td>{{product.name}}</td>
+      <td>{{product.price}}</td>
+      <td>{{product.quantity}}</td>
+      <td>
+
+        <!--Change Quantity of Items in Cart-->
+        <form action="" method="post" novalidate>
+          {{ form.hidden_tag() }}
+          <input type="hidden" name="product_id" value={{product.product_id}}>
+          <input type="hidden" name="seller_id" value={{product.seller_id}}>
+          <p>{{ form.quantity(size = 3)}}</p>
+          <button onclick=form.submit()> Change Quantity</button>
+        </form>
+      </td>
+      
+      <!--Remove Item in Cart-->
+      <td>
+        <form action="" method="post" novalidate>
+          {{ form2.hidden_tag() }}
+          <input type="hidden" name="remove_id" value={{product.product_id}}>
+          <button onclick=form2.submit()> Remove</button>
+        </form>
+      </td>
+
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul>
+      {% for message in messages %}
+      <span style="color: red;">{{ message }}</span>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+
+<!--Order Total-->
+<h4>Total Price: </h4>
+<p>{{total_price}}</p>
+
+<!--Order Submit-->
+<form action="" method="post" novalidate>
+  {{ form3.hidden_tag() }}
+  <input type="hidden" name="order_id" value=0>
+  <button onclick=form3.sumbit()> Submit Order</button>
+</form>
+{% for error in error %}
+<span style="color: red;">{{ error}}</span>
+{% endfor %}
+
+<br><br>
+
+
+
+
+{% endblock %}

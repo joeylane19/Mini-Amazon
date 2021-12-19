@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<br><br>
+
+<!--Start Selling an Existing Item -->
+
+<h2>Add Product</h2>
+<form action="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+
+    <!--Add Quantity-->
+    <p>
+        {{ form.productName.label }}<br />
+        {{ form.productName }}<br />
+        {% for error in form.productName.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.quantity.label }}<br />
+        {{ form.quantity(size=32) }}<br />
+        {% for error in form.quantity.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+
+    <!--Error Messages-->
+    <p>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+    </p>
+    {{ form.submit(class_="btn btn-black") }}
+</form>
+
+<br><br>
+
+
+{% endblock %}

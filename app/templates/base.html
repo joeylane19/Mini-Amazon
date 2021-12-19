@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+  <title>Mini Amazon</title>
+
+  <!--Imports for styling and more-->
+  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/example.css') }}">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+  <!--CSS Styling-->
+  <style>
+    body {
+      font-family: "Lato", sans-serif;
+    }
+
+    .main-head {
+      height: 150px;
+      background: #FFF;
+    }
+
+    .sidenav {
+      height: 100%;
+      background-color: #000;
+      overflow-x: hidden;
+      padding-top: 20px;
+    }
+
+    .main {
+      padding: 0px 10px;
+    }
+
+    .login-main-text {
+      margin-top: 20%;
+      padding: 60px;
+      color: #fff;
+    }
+
+    .login-main-text h2 {
+      font-weight: 300;
+    }
+
+    .btn-black {
+      background-color: #000 !important;
+      color: #fff;
+    }
+
+    .button {
+      background-color: black;
+      /* Green */
+      border: none;
+      color: white;
+      padding: 16px 32px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      transition-duration: 0.4s;
+      cursor: pointer;
+    }
+
+    .searchButton {
+      background-color: black;
+      /* Green */
+      border: none;
+      color: white;
+      padding: .8px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      transition-duration: 0.4s;
+      cursor: pointer;
+    }
+
+    .button1 {
+      background-color: white;
+      color: black;
+      border: 2px solid black;
+    }
+
+    .button1:hover {
+      background-color: black;
+      color: white;
+    }
+
+
+    .button:hover {
+      background-color: black;
+      /* Green */
+      color: white;
+    }
+  </style>
+</head>
+
+
+<!--Header for all pages-->
+<body>
+  <div class="sidenav">
+    {% block msg %}
+    <h1 style="color:aliceblue"><i class="fa fa-fw fa-amazon"></i>Welcome to Mini Amazon</h1>
+    <div style="color: aliceblue; text-align: right; margin-bottom: 25px">
+      {% if current_user.is_authenticated %}
+      Hello {{current_user.firstname}}!
+      <a href="/" type="button" class="btn btn-light">Home</a>
+      <a href="{{ url_for('sellerhistory.sellerhistory') }}" type="button" class="btn btn-light">Seller History</a>
+      <a href="{{ url_for('inventory.inventory') }}" type="button" class="btn btn-light">My Products</a>
+      <a href="{{ url_for('users.updateAccount') }}" type="button" class="btn btn-light">My Account</a>
+      <a href="{{ url_for('users.buyerHistory') }}" type="button" class="btn btn-light">Order History</a>
+      <a href="{{ url_for('cart.viewCart') }}" type="button" class="btn btn-light">Cart</a>
+      <a href="{{ url_for('users.logout') }}" type="button" class="btn btn-light">Log out</a>
+      {% else %}
+      <a href="{{ url_for('users.login') }}" type="button" class="btn btn-light">Log in</a>
+      {% endif %}
+    </div>
+    {% endblock %}
+  </div>
+  <div class="main">
+    {% block content %}{% endblock %}
+  </div>
+</body>
+
+</html>

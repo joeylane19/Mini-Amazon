@@ -1,0 +1,248 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<br><br>
+
+<!-- Card CSS Setup -->
+<div class="w3-main w3-white">
+  <div class="w3-container">
+
+    <!-- Display Product Name -->
+    <h4><strong>{{product.name}}</strong></h4>
+
+    <!-- Product Details -->
+    <div class="w3-row">
+      <div class="w3-col s6">
+        <img src={{product.image}} width=150 height=150>
+        <p><i class="fa fa-fw fa-amazon"></i>Product ID: {{product.id}}</p>
+        <p><i class="fa fa-fw fa-dollar"></i>Price: {{product.price}}</p>
+        <p><i class="fa fa-fw fa-heart"></i>Number of Reviews: {{num}}</p>
+        {% if num != 0 %}
+        <p style = "width: 164px; overflow: hidden; white-space: nowrap;"><i class="fa fa-fw fa-heartbeat"></i> Average Rating: {{product.average_rating}}</p>
+        {% endif %}
+        <p><i class="fa fa-fw fa-info-circle"></i> Description: {{product.details}}</p>
+      </div>
+    </div>
+    <hr>
+
+    <!-- Seller List -->
+    {% if current_user.is_authenticated %}
+    <h4><strong>Buy {{product.name}}</strong></h4>
+    <div class="w3-row w3-large">
+      <div class="w3-col card">
+        <table class='table table-hover table-bordered container'>
+          <thead class="thead-light">
+            <tr>
+              <th scope="col">Seller</th>
+              <th scope="col">Quantity Available</th>
+              {% if current_user.is_authenticated %}
+              <th scope="col">Add Quantity to Cart</th>
+              {% endif %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for each in get_info %}
+            <tr>
+              <!-- Seller Name/Link -->
+              <th scope="row">
+                <a href="{{ url_for('public.view', id = each.seller_id)}}"> {{each.firstname}} {{each.lastname}}</a>
+              </th>
+              {% if each.quantity > 0 %}
+              <td>{{each.quantity}}</td>
+              {% else %}
+              <td>SOLD OUT</td>
+              {% endif %}
+
+              <!-- Add to Cart -->
+              {% if current_user.is_authenticated and [each.id, each.seller_id] not in cart_prods %}
+              <td>
+                <form action="" method="post" novalidate>
+                  {{ form3.hidden_tag() }}
+                  <input type="hidden" name="product_id" value={{each.id}}>
+                  <input type="hidden" name="seller_id" value={{each.seller_id}}>
+                  <p>{{ form3.quantity(size = 4)}}</p>
+                  <button class="button button1" onclick=form3.submit()>Add to Cart</button>
+                </form>
+              </td>
+              {% endif %}
+
+              <!-- If user already has item in the cart-->
+              {% if current_user.is_authenticated and [each.id, each.seller_id] in cart_prods %}
+              <td>Already in cart</td>
+              {% endif %}
+            </tr>
+            {% endfor %}
+          </tbody>
+
+        </table>
+        </td>
+        {% endif %}
+      </div>
+    </div>
+    {% if current_user.is_authenticated %}
+    <hr>
+
+    <!-- Submit Review Section -->
+    <h4><strong>Submit A Review</strong></h4>
+
+    <!-- If user has not reviewed this product -->
+    {% if not reviewed %}
+
+
+    <div class="w3-row w3-large">
+      <div class="w3-col">
+        <div class="card">
+
+          <!-- Star Rating Functionality -->
+          <form style="text-align: center;" action="" method="post" novalidate>
+            <input type="hidden" name="rated">
+            {{ form.hidden_tag() }}
+
+            <div class="rate">
+              <input type="radio" id="star5" name="rate" value="5" />
+              <label for="star5" title="text">{{form.rating}}</label>
+              <input type="radio" id="star4" name="rate" value="4" />
+              <label for="star4" title="text">{{form.rating}}</label>
+              <input type="radio" id="star3" name="rate" value="3" />
+              <label for="star3" title="text">{{form.rating}}</label>
+              <input type="radio" id="star2" name="rate" value="2" />
+              <label for="star2" title="text">{{form.rating}}</label>
+              <input type="radio" id="star1" name="rate" value="1" />
+              <label for="star1" title="text">{{form.rating}}</label>
+            </div>
+
+            <!-- Submit Button -->
+            <button class="button button1" onclick=form.sumbit()>Submit Review</button>
+
+
+          </form>
+        </div>
+      </div>
+      {% else %}
+
+      <!-- If user has reviewed this product -->
+      <div class="card">
+
+        <!-- Star Rating Functionality -->
+        <form style="text-align: center;" action="" method="post" novalidate>
+          <input type="hidden" name="rated">
+          {{ form.hidden_tag() }}
+
+          <div class="rate">
+            <input type="radio" id="star5" name="rate" value="5" />
+            <label for="star5" title="text">{{form.rating}}</label>
+            <input type="radio" id="star4" name="rate" value="4" />
+            <label for="star4" title="text">{{form.rating}}</label>
+            <input type="radio" id="star3" name="rate" value="3" />
+            <label for="star3" title="text">{{form.rating}}</label>
+            <input type="radio" id="star2" name="rate" value="2" />
+            <label for="star2" title="text">{{form.rating}}</label>
+            <input type="radio" id="star1" name="rate" value="1" />
+            <label for="star1" title="text">{{form.rating}}</label>
+          </div>
+
+          <!-- Submit your edit Button -->
+          <button class="button button1" onclick=form.sumbit()>Edit Review</button>
+
+          <!-- Delete Review Button -->
+          <input type="hidden" name="delete">
+          {{ form2.hidden_tag() }}
+          <button class="button button1" onclick=form2.sumbit()>Delete</button>
+
+
+
+        </form>
+      </div>
+
+    </div>
+    {% endif %}
+  </div>
+  <hr>
+  {% endif %}
+
+
+
+
+
+
+  <!-- All Posted Reviews Section -->
+  <h4><strong>All Reviews</strong></h4>
+  <div class="w3-row w3-large">
+    <div class="w3-col">
+      <div class="card">
+        <div>
+
+
+          <!-- Show posted reivew -->
+          {% for review in reviews%}
+          {% if current_user.is_authenticated %}
+          <a href="{{ url_for('public.view', id = review.author_id) }}"> {{review.fname}} {{review.lname}}</a>
+          {%else%}
+          <h4> {{review.fname}} {{review.lname}}</h4>
+          {%endif%}
+          {% if review.rating == 5 %}
+          &nbsp; &nbsp; &nbsp;
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          &nbsp; &nbsp; &nbsp;
+          {{review.date.strftime("%Y-%m-%d %H:%M:%S")}}
+          <br>
+          {% endif %}
+          {% if review.rating == 4 %}
+          &nbsp; &nbsp; &nbsp;
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star"></span>
+          &nbsp; &nbsp; &nbsp;
+          {{review.date.strftime("%Y-%m-%d %H:%M:%S")}}
+          <br>
+          {% endif %}
+          {% if review.rating == 3 %}
+          &nbsp; &nbsp; &nbsp;
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star"></span>
+          <span class="fa fa-star"></span>
+          &nbsp; &nbsp; &nbsp;
+          {{review.date.strftime("%Y-%m-%d %H:%M:%S")}}
+          <br>
+          {% endif %}
+          {% if review.rating == 2 %}
+          &nbsp; &nbsp; &nbsp;
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star"></span>
+          <span class="fa fa-star"></span>
+          <span class="fa fa-star"></span>
+          &nbsp; &nbsp; &nbsp;
+          {{review.date.strftime("%Y-%m-%d %H:%M:%S")}}
+          <br>
+          {% endif %}
+          {% if review.rating == 1 %}
+          &nbsp; &nbsp; &nbsp;
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star"></span>
+          <span class="fa fa-star"></span>
+          <span class="fa fa-star"></span>
+          <span class="fa fa-star"></span>
+          &nbsp; &nbsp; &nbsp;
+          {{review.date.strftime("%Y-%m-%d %H:%M:%S")}}
+          <br>
+          {% endif %}
+
+          {%endfor%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<hr>
+
+{% endblock %}

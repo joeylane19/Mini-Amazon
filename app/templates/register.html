@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Register</h1>
+
+<form action="" method="post">
+  {{ form.hidden_tag() }}
+
+  <!--First Name Input-->
+  <p>
+    {{ form.firstname.label }}<br />
+    {{ form.firstname(size=32) }}<br />
+    {% for error in form.firstname.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+
+  <!--Last Name Input-->
+  <p>
+    {{ form.lastname.label }}<br />
+    {{ form.lastname(size=32) }}<br />
+    {% for error in form.lastname.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+
+  <!--Email Input-->
+  <p>
+    {{ form.email.label }} (Could be fake email address)<br />
+    {{ form.email(size=64) }}<br />
+    {% for error in form.email.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+
+  <!--Address Input-->
+  <p>
+    {{ form.addr.label }}<br />
+    {{ form.addr(size=64) }}<br />
+    {% for error in form.addr.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+
+  <!--Password Input-->
+  <p>
+    {{ form.password.label }}<br />
+    {{ form.password(size=32) }}<br />
+    {% for error in form.password.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+
+  <!--Repeat Password Input-->
+  <p>
+    {{ form.password2.label }}<br />
+    {{ form.password2(size=32) }}<br />
+    {% for error in form.password2.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>{{ form.submit() }}</p>
+</form>
+
+{% endblock %}

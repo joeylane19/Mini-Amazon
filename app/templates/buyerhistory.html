@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<br><br>
+
+<h2>Order History:</h2>
+
+<!--Orders sorter-->
+{% if (itemOrders[0] != null) %}
+
+<form style="text-align: center;" action="" method="post" novalidate>
+  {{form.hidden_tag()}}
+  <input type="hidden" name="sort">
+  <button class="searchButton button1" onclick=form.submit>Sort by Price:</button>
+  {{form.sortField}}
+</form>
+
+<br>
+
+<!--Orders Table-->
+<div class="card">
+  <table class='table table-hover table-bordered container'>
+
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Order Id</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Fulfillment Status</th>
+        <th scope="col">Price</th>
+        <th scope="col">Date</th>
+        <th scope="col">Detailed Cart Page</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for order in itemOrders%}
+      <tr>
+        <td>{{order[0].order_id}}</td>
+        <td>{{order[-2]}}</td>
+
+        <!--Order Fulfillment Specifics-->
+        <td>
+          {% if (order[0].fullfilled == 0) %}
+          UNFULFILLED
+          {% endif %}
+          {% if (order[0].fullfilled == 1) %}
+          FULFILLED
+          {% endif %}
+        </td>
+        <td>{{order[-1]}}</td>
+        <td>{{order[0].date_and_time}}</td>
+
+        <!--Link to see order summary-->
+        <td>
+          <a href="{{ url_for('cart.viewOrder', id = order[0].order_id)}}"> View Order</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+{% if (itemOrders[0] == null) %}
+No orders yet
+{% endif %}
+
+
+
+<br><br>
+
+{% endblock %}

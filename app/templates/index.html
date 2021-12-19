@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<br><br>
+
+<!--Main Product Search page-->
+
+<h2 style="text-align: center;"><i class="fa fa-fw fa-amazon"></i>Products for Sale</h2>
+
+<!--Keyword Search-->
+<form style="text-align: center;" action="" method="post" novalidate>
+  {{ form2.hidden_tag() }}
+  <input type="hidden" name="uniqueSearch">
+  {{ form2.word(size=32) }}
+  <button class="searchButton button1" onclick=form2.submit()>Search</button>
+</form>
+
+<!--Category Search-->
+<form style="text-align: center;" action="" method="post" novalidate>
+  {{ formC.hidden_tag() }}
+  <br>
+  <br>
+  <input type="hidden" name="cSearch">
+  <button class="searchButton button1" onclick=formC.cat>Browse Category</button>
+  {{formC.cat}}
+</form>
+
+<!--Sort Items by Price-->
+<form style="text-align: center;" action="" method="post" novalidate>
+  {{ form4.hidden_tag() }}
+  <br>
+  <br>
+  <input type="hidden" name="ASC">
+  <button class="searchButton button1" onclick=form4.sortField>Sort by Price:</button>
+  {{form4.sortField}}
+
+</form>
+<br>
+
+<!--Products Table-->
+<table id="customers" class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Product ID</th>
+      <th scope="col">Product Image</th>
+      <th scope="col">Product Name</th>
+      <th scope="col">Price</th>
+      <th scope="col">Average Rating</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for product in avail_products%}
+    <tr>
+      <th scope="row">{{product.id}}</th>
+
+      <!--Product Image-->
+      <td><img src={{product.image}} width=100 height=100></td>
+
+      <!--Product Hyperlink-->
+      <td>
+        <a href="{{ url_for('index.product', id = product.id)}}"> {{product.name}}</a>
+        </form>
+      </td>
+      <td>{{product.price}}</td>
+      <td>{{product.average_rating}}</td>
+    </tr>
+    {% endfor %}
+
+  </tbody>
+</table>
+
+{% endblock %}

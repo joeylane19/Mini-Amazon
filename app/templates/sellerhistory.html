@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<br><br>
+
+<h2>Seller History:</h2>
+<br>
+{% if (itemOrders[0] != null) %}
+{% for orders in itemOrders%}
+
+<!--Password Input-->
+<div class="card">
+  <p><b>Order ID: </b>{{orders[0].order_id}} <br>
+    <b>Address: </b>{{orders[0].addr}} <br>
+    <b>Date Order Placed: </b>{{orders[0].date_and_time}}</p>
+
+  <table class='table table-hover table-bordered container'>
+
+    <thead class="thead-dark">
+
+      <!--Table Columns-->
+      <tr>
+        <th scope="col">Product ID</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Price</th>
+        <th scope="col">Fulfillment Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for order in orders[:-3]%}
+      <tr>
+        <td>{{order.product_id}}</td>
+        <td>{{order.quantity}}</td>
+        <td>{{order.price}}</td>
+
+        <!--Order Fulfillmet Status-->
+        <td>
+          {% if (order.fullfilled == 0) %}
+          UNFULFILLED
+          <form action="" method="post" novalidate>
+            {{ form.hidden_tag() }}
+            <input type="hidden" name="order_id" value={{order.order_id}}>
+            <input type="hidden" name="product_id" value={{order.product_id}}>
+            <input type="hidden" name="seller_id" value={{order.seller_id}}>
+            <button onclick=form.submit()>Fulfill</button>
+          </form>
+          {% endif %}
+          {% if (order.fullfilled == 1) %}
+          FULFILLED
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+      <tr>
+        <th></th>
+        <th>{{orders[-1]}}</th>
+        <th>{{orders[-3]}}</th>
+        <th>{{orders[-2]}}</th>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<br>
+{% endfor %}
+
+{% endif %}
+{% if (itemOrders[0] == null) %}
+No orders yet
+{% endif %}
+
+
+
+
+
+
+
+<br><br>
+
+{% endblock %}

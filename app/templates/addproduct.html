@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<br><br>
+
+<!--Add New Product Page -->
+
+<h2>Add Product</h2>
+<form action="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+    <p>
+        {{ form.productName.label }}<br />
+        {{ form.productName(size=32) }}<br />
+        {% for error in form.productName.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.price.label }}<br />
+        {{ form.price(size=32) }}<br />
+        {% for error in form.price.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.details.label }}<br />
+        {{ form.details(size=32) }}<br />
+        {% for error in form.details.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.image.label }}<br />
+        {{ form.image(size=32) }}<br />
+        {% for error in form.image.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.type.label }}<br />
+        {{ form.type }}<br />
+        {% for error in form.type.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.quantity.label }}<br />
+        {{ form.quantity(size=32) }}<br />
+        {% for error in form.quantity.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+          {% for message in messages %}
+          <span style="color: red;">{{ message }}</span>
+          {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+    </p>
+    {{ form.submit(class_="btn btn-black") }}
+</form>
+
+<br><br>
+
+
+{% endblock %}
